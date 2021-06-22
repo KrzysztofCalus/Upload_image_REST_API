@@ -1,4 +1,4 @@
-"""upload_image_project1 URL Configuration
+"""upload_image_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/

@@ -1,5 +1,5 @@
 """
-WSGI config for upload_image_project1 project.
+WSGI config for upload_image_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'upload_image_project1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'upload_image_project.settings')
 
 application = get_wsgi_application()
