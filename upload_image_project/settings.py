@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'upload_image',
     'rest_framework',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

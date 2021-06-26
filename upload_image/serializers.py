@@ -1,19 +1,80 @@
+from django.template.defaultfilters import upper
 from rest_framework import serializers
 from upload_image.models import ImageModel
+from PIL import Image
+from sorl.thumbnail import get_thumbnail
+import imghdr
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    small_image = serializers.SerializerMethodField()
+class EnterpriseSerializer(serializers.ModelSerializer):
+    thumbnail_200 = serializers.SerializerMethodField()
+    thumbnail_400 = serializers.SerializerMethodField()
 
     class Meta:
         owner = serializers.ReadOnlyField(source='owner.username')
         model = ImageModel
-        fields = ['image', 'small_image']
+        fields = ['image', 'thumbnail_200', 'thumbnail_400']
 
-    def get_small_image(self, object):
-        """
-        Give additional field in JSON
-        :param object:
-        :return:
-        """
-        return "http://127.0.0.1:8000" + object.image.url
+    def get_thumbnail_400(self, object):
+        format = upper(imghdr.what('media/' + object.image.name))
+        new_height = 400
+        image = Image.open('media/' + object.image.name)
+        width, height = image.size
+        new_width = int(new_height * width / height)
+        im = get_thumbnail(object, f'{new_width}x{new_height}', crop='center', quality=99, format=format)
+        return "http://127.0.0.1:8000" + im.url
+
+    def get_thumbnail_200(self, object):
+        format = upper(imghdr.what('media/' + object.image.name))
+        new_height = 200
+        image = Image.open('media/' + object.image.name)
+        width, height = image.size
+        new_width = int(new_height * width / height)
+        im = get_thumbnail(object, f'{new_width}x{new_height}', crop='center', quality=99, format=format)
+        return "http://127.0.0.1:8000" + im.url
+
+
+class PremiumSerializer(serializers.ModelSerializer):
+    thumbnail_200 = serializers.SerializerMethodField()
+    thumbnail_400 = serializers.SerializerMethodField()
+
+    class Meta:
+        owner = serializers.ReadOnlyField(source='owner.username')
+        model = ImageModel
+        fields = ['image', 'thumbnail_200', 'thumbnail_400']
+
+    def get_thumbnail_400(self, object):
+        format = upper(imghdr.what('media/' + object.image.name))
+        new_height = 400
+        image = Image.open('media/' + object.image.name)
+        width, height = image.size
+        new_width = int(new_height * width / height)
+        im = get_thumbnail(object, f'{new_width}x{new_height}', crop='center', quality=99, format=format)
+        return "http://127.0.0.1:8000" + im.url
+
+    def get_thumbnail_200(self, object):
+        format = upper(imghdr.what('media/' + object.image.name))
+        new_height = 200
+        image = Image.open('media/' + object.image.name)
+        width, height = image.size
+        new_width = int(new_height * width / height)
+        im = get_thumbnail(object, f'{new_width}x{new_height}', crop='center', quality=99, format=format)
+        return "http://127.0.0.1:8000" + im.url
+
+
+class BasicSerializer(serializers.ModelSerializer):
+    thumbnail_200 = serializers.SerializerMethodField()
+
+    class Meta:
+        owner = serializers.ReadOnlyField(source='owner.username')
+        model = ImageModel
+        fields = ['thumbnail_200']
+
+    def get_thumbnail_200(self, object):
+        format = upper(imghdr.what('media/' + object.image.name))
+        new_height = 200
+        image = Image.open('media/' + object.image.name)
+        width, height = image.size
+        new_width = int(new_height * width / height)
+        im = get_thumbnail(object, f'{new_width}x{new_height}', crop='center', quality=99, format=format)
+        return "http://127.0.0.1:8000" + im.url
