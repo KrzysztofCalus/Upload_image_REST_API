@@ -1,1 +1,1 @@
-web: gunicorn books_rest_api.wsgi
+web: gunicorn upload_image_project.wsgi
