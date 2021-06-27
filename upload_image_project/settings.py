@@ -28,7 +28,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SECRET_KEY = [os.environ.get('SECRET_KEY_UPLOAD_IMAGE_PROJECT')]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'upload-image-rest-api.herokuapp.com',
