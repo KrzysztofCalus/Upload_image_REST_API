@@ -21,7 +21,7 @@ from django.urls import path, include
 from upload_image.views import ImageUploadView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('images', ImageUploadView.as_view()),
-    path('api-auth/', include('rest_framework.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls, name='admin'),
+                  path('images', ImageUploadView.as_view(), name='image'),
+                  path('api-auth/', include('rest_framework.urls'), name='login'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

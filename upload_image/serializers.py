@@ -1,6 +1,6 @@
 from django.template.defaultfilters import upper
 from rest_framework import serializers
-from upload_image.models import ImageModel
+from .models import ImageModel
 from PIL import Image
 from sorl.thumbnail import get_thumbnail
 import imghdr
@@ -16,6 +16,11 @@ class EnterpriseSerializer(serializers.ModelSerializer):
         fields = ['image', 'thumbnail_200', 'thumbnail_400']
 
     def get_thumbnail_400(self, object):
+        """
+        Create thumbnail size 400 on height. Save image in cache.
+        :param object:
+        :return:
+        """
         format = upper(imghdr.what('media/' + object.image.name))
         new_height = 400
         image = Image.open('media/' + object.image.name)
@@ -25,6 +30,11 @@ class EnterpriseSerializer(serializers.ModelSerializer):
         return "http://127.0.0.1:8000" + im.url
 
     def get_thumbnail_200(self, object):
+        """
+        Create thumbnail size 200 on height. Save image in cache.
+        :param object:
+        :return:
+        """
         format = upper(imghdr.what('media/' + object.image.name))
         new_height = 200
         image = Image.open('media/' + object.image.name)
@@ -68,7 +78,7 @@ class BasicSerializer(serializers.ModelSerializer):
     class Meta:
         owner = serializers.ReadOnlyField(source='owner.username')
         model = ImageModel
-        fields = ['thumbnail_200']
+        fields = ['image', 'thumbnail_200']
 
     def get_thumbnail_200(self, object):
         format = upper(imghdr.what('media/' + object.image.name))

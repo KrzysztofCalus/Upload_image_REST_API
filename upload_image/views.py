@@ -1,14 +1,11 @@
-from django.shortcuts import render
-
 # Create your views here.
 
-from rest_framework.generics import ListCreateAPIView
-from upload_image.models import ImageModel
-from upload_image.serializers import PremiumSerializer, BasicSerializer, EnterpriseSerializer
-from django.contrib.auth.models import Group
+from .models import ImageModel, PlansModel, UserModel
+from .serializers import PremiumSerializer, BasicSerializer, EnterpriseSerializer
+from rest_framework import generics
 
 
-class ImageUploadView(ListCreateAPIView):
+class ImageUploadView(generics.ListCreateAPIView):
     queryset = ImageModel.objects.all()
 
     def get_serializer_class(self):
@@ -16,9 +13,18 @@ class ImageUploadView(ListCreateAPIView):
         Returning data depending on account tiers
         :return:
         """
-        if Group.objects.get(name="basic").user_set.filter(id=self.request.user.id).exists():
+
+        user = UserModel.objects.get(user_id=self.request.user.id)
+        user_plan_id = user.plan_id
+
+        thumb_200 = PlansModel.objects.get(thumbnail_200=True)
+        thumb_200_plan_id = thumb_200.id
+        thumb_400 = PlansModel.objects.get(thumbnail_400=True)
+        thumb_400_plan_id = thumb_400.id
+
+        if user_plan_id == thumb_200_plan_id:
             return BasicSerializer
-        if Group.objects.get(name="premium").user_set.filter(id=self.request.user.id).exists():
+        elif user_plan_id == thumb_400_plan_id:
             return PremiumSerializer
         else:
             return EnterpriseSerializer
